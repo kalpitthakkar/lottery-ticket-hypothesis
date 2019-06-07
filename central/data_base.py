@@ -120,7 +120,7 @@ class DataBase(object):
         self._val_dir = val_dir
         self._feature_desc = feature_desc
         self._seed = random_seed_shuffle
-        create_dataset_instance()
+        self.create_dataset_instance()
 
         # Define the iterator handle placeholder -> Can be used
         # for different splits. All have same types and shapes as
@@ -135,7 +135,8 @@ class DataBase(object):
     def create_dataset_instance(self):
         self._data = DataReader(
             self._dtype, self._train_dir, self._train_batch_size,
-            self._test_dir, seld._val_dir, random_seed=self._seed
+            self._test_dir, self._val_dir, self._feature_desc,
+            random_seed=self._seed
         )
 
     @property
