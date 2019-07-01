@@ -1,9 +1,9 @@
 """ The dataset for mice behavior recorded at CORE. """
 
-from central import data_base
-
 import tensorflow as tf
 import numpy as np
+
+from central import data_base
 
 class DataMiceCORE(data_base.DataBase):
     """ Mice behavior (CORE) dataset. """
@@ -26,15 +26,15 @@ class DataMiceCORE(data_base.DataBase):
 
     def __repr__(self):
         return_str = ("DataMiceCORE(\n"
-            "data_type=%s,\n"
-            "train_dir=%s,\n"
-            "batch_size=%s,\n"
-            "test_dir=%s,\n"
-            "val_dir=%s,\n"
-            "random_seed=%s,\n"
-            "feature_desc=%s,\n"
-            "preprocessing_fn=%s".format(
-                self._data_type,
+            "data_type={},\n"
+            "train_dir={},\n"
+            "batch_size={},\n"
+            "test_dir={},\n"
+            "val_dir={},\n"
+            "random_seed={},\n"
+            "feature_desc={},\n"
+            "preprocessing_fn={})".format(
+                self._dtype,
                 self._train_dir,
                 self._train_batch_size,
                 self._test_dir,

@@ -1,6 +1,6 @@
 """ Parent class for every dataset to be used. """
 
-import glob, os
+import glob, os, sys
 
 import tensorflow as tf
 import numpy as np
@@ -25,16 +25,17 @@ class DataSplit(object):
 
         self._dataset = dataset
 
-        if not isinstance(preprocessing_fn, list):
-            preprocessing_fn = [preprocessing_fn]
+        if preprocessing_fn:
+            if not isinstance(preprocessing_fn, list):
+                preprocessing_fn = [preprocessing_fn]
 
-        try:
-            for pre_fn in preprocessing_fn:
-                if not pre_fn:
-                    self._dataset.map(pre_fn)
-        except e:
-            print("Preprocessing function not compatible with dataset API throwing \
-                   the error ", e)
+            try:
+                for pre_fn in preprocessing_fn:
+                    if not pre_fn:
+                        self._dataset.map(pre_fn)
+            except:
+                print("Preprocessing function not compatible with dataset API throwing \
+                       the error: ", sys.exc_info()[0])
 
         # Shuffle if asked for
         if shuffle:
@@ -73,7 +74,7 @@ class DataReader(object):
                  val_dir,
                  feature_description,
                  random_seed,
-                 preprocess_fn):
+                 preprocessing_fn):
         if data_type == 'TFRecord':
             def _parse_function(example_proto):
                 return tf.parse_single_example(example_proto, feature_description)
@@ -84,7 +85,7 @@ class DataReader(object):
             parsed_dataset = train_paths.map(_parse_function)
             self._train = DataSplit(
                 parsed_dataset, batch_size=batch_size, shuffle=True,
-                seed=random_seed, preprocessing_fn=preprocess_fn
+                seed=random_seed, preprocessing_fn=preprocessing_fn
             )
 
             # Create the test dataset
